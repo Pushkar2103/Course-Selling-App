@@ -1,6 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Navbar() {
     const navigator = useNavigate();
@@ -21,26 +22,49 @@ function Navbar() {
 }
 
 function NavRight() {
+    const navigator = useNavigate();
     const [user, setUser] = useState(null);
+
+    useEffect(()=> {
+        axios.get('http://localhost:3000/user/me', {
+            headers: {
+                Authorization: 'bearer '+localStorage.getItem('token')
+            }
+        }).then((res)=> {
+            setUser(res.data.username)
+        })
+    }, []);
 
     if(!user)   
     return (
     <div>
         <Button variant="contained" style={{
             marginRight:5
+        }} onClick={()=>{
+            navigator('/signup')
         }}>Signup</Button>
 
-        <Button variant="contained">Login</Button>
+        <Button variant="contained" onClick={()=>{
+            navigator('/login')
+        }}>Login</Button>
     </div>);
 
     else
     return (
-    <div>
-        <Typography>
+    <div style={{
+        display:"flex",
+        alignItems:"center"
+    }}>
+        <Typography style={{
+            marginRight:10
+        }}>
             {user}
         </Typography>
 
-        <Button variant="contained">Logout</Button>
+        <Button variant="contained" onClick={()=> {
+            localStorage.removeItem('token');
+            window.location = '/';
+        }}>Logout</Button>
     </div>);      
 };
 

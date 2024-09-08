@@ -66,7 +66,27 @@ router.get('/courses', async (req, res)=> {
     }
 });
 
-router.put('/courses/:courseId', authorization, async (req, res) => {
+router.get('/courses/:courseId', authorization, async (req, res) => {
+    const username = req.user.username; 
+    const courseId = req.params.courseId;
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    const coursePurchased = user.purchasedCourses.some(crs => crs.toString() === courseId);
+    let crs = await Course.findById(courseId);
+
+    if (!coursePurchased) {
+        return res.status(200).json({course:crs, purchased:false})
+    }
+    
+    res.status(200).json({course:crs, purchased:true})
+});
+
+router.put('/course/:courseId', authorization, async (req, res) => {
     const username = req.user.username; 
     const courseId = req.params.courseId;
 
@@ -81,7 +101,7 @@ router.put('/courses/:courseId', authorization, async (req, res) => {
     if (!coursePurchased) {
         user.purchasedCourses.push(courseId);
         await user.save(); 
-        res.status(200).json({ message: 'Course added to purchased courses' });
+        return res.status(200).json({ message: 'Course added to purchased courses' });
     }
 
     res.status(200).json({ message: 'Course already purchased' });
