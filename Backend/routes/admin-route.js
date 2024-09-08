@@ -85,7 +85,7 @@ router.post('/create-course', authorization, async (req, res)=> {
 
 router.get('/courses/:courseId', authorization, async (req, res) => {
     const courseId = req.params.courseId;
-    const findCrs = await Course.findOne({ _id: courseId});
+    const findCrs = await Course.findById(courseId);
 
     if (!findCrs) {
         return res.status(404).json({ message: 'Course not found' });
