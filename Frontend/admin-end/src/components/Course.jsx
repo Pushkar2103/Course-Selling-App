@@ -116,7 +116,7 @@ function Course() {
                 body: JSON.stringify({
                     title: title,
                     description: desc,
-                    image: img,
+                    imageLink: img,
                     createdBy:createdBy,
                     price:price
                 }),

@@ -5,9 +5,32 @@ import { Typography } from "@mui/material";
 import { useState } from "react";
 
 function SignUp() {
-    const [user, setUser] = useState();
-    const [pass, setPass] = useState();
-    const [vis, setVis] = useState('hidden');
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
+  const [vis, setVis] = useState("hidden");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    fetch('http://localhost:3000/admin/signup', {
+      method: 'POST',
+      body: JSON.stringify({
+        'username': user,
+        'password': pass
+      }),
+      headers: {
+        'Content-type': "application/json"
+      }
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => localStorage.setItem('admin-token', data.token));
+        window.location = '/admin';
+      } else {
+        setVis('visible');
+        setTimeout(() => setVis('hidden'), 3000);
+      }
+    });
+  };
 
   return (
     <div
@@ -31,7 +54,7 @@ function SignUp() {
         style={{
           display: "flex",
           justifyContent: "center",
-          position:'relative'
+          position: 'relative'
         }}
       >
         <Card
@@ -41,62 +64,40 @@ function SignUp() {
           }}
         >
           <div style={{
-            color:'red',
-            position:'absolute',
-            visibility:vis
+            color: 'red',
+            position: 'absolute',
+            visibility: vis
           }}>
             Username already exists!
           </div>
           <br />
 
-          <TextField
-            id="username"
-            label="Username"
-            variant="outlined"
-            fullWidth={true}
-            onChange={(e)=>{
-                setUser(e.target.value);
-            }}
-          />
-          <br />
-          <br />
-          <TextField
-            id="password"
-            label="Password"
-            variant="outlined"
-            type="password"
-            fullWidth={true}
-            onChange={(e)=>{ 
-                setPass(e.target.value);
-            }}
-          />
-          <br />
-          <br />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="contained"
-                onClick={()=> {
-                    fetch('http://localhost:3000/admin/signup', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            'username': user,
-                            'password': pass
-                        }),
-                        headers: {
-                            'Content-type': "application/json"
-                        }
-                    }).then((res)=>{
-                        if(res.ok) {
-                            res.json().then((data)=> localStorage.setItem('admin-token', data.token));
-                            window.location = '/admin';
-                        }
-                        else {
-                            setVis('visible');
-                            setTimeout(()=> setVis('hidden'), 3000);
-                        }
-                    })
-                }}
-            >SignUp</Button>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="username"
+              label="Username"
+              variant="outlined"
+              fullWidth={true}
+              onChange={(e) => setUser(e.target.value)}
+            />
+            <br />
+            <br />
+            <TextField
+              id="password"
+              label="Password"
+              variant="outlined"
+              type="password"
+              fullWidth={true}
+              onChange={(e) => setPass(e.target.value)}
+            />
+            <br />
+            <br />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button variant="contained" type="submit">
+                SignUp
+              </Button>
+            </div>
+          </form>
         </Card>
       </div>
     </div>

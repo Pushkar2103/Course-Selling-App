@@ -6,9 +6,30 @@ import { useState } from "react";
 import axios from "axios";
 
 function SignIn() {
-  const [user, setUser] = useState();
-  const [pass, setPass] = useState();
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
   const [vis, setVis] = useState("hidden");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    axios.post("http://localhost:3000/user/login", {
+      'username': user,
+      'password': pass
+    }, {
+      headers: {
+        'Content-type': "application/json"
+      }
+    }).then((res) => {
+      if (res.status === 200) {
+        localStorage.setItem('token', res.data.token);
+        window.location = '/';
+      }
+    }).catch(() => {
+      setVis('visible');
+      setTimeout(() => setVis('hidden'), 3000);
+    });
+  };
 
   return (
     <div
@@ -24,7 +45,7 @@ function SignIn() {
         }}
       >
         <Typography variant={"h6"}>
-          Welcome to Coursera. signIn below.
+          Welcome to Coursera. SignIn below.
         </Typography>
       </div>
 
@@ -52,54 +73,32 @@ function SignIn() {
           </div>
           <br />
 
-          <TextField
-            id="username"
-            label="Username"
-            variant="outlined"
-            fullWidth={true}
-            onChange={(e) => {
-              setUser(e.target.value);
-            }}
-          />
-          <br />
-          <br />
-          <TextField
-            id="password"
-            label="Password"
-            variant="outlined"
-            type="password"
-            fullWidth={true}
-            onChange={(e) => {
-              setPass(e.target.value);
-            }}
-          />
-          <br />
-          <br />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                axios.post("http://localhost:3000/user/login", {
-                            'username': user,
-                            'password': pass
-                        }, {
-                        headers: {
-                            'Content-type': "application/json"
-                        }
-                    }).then((res)=>{
-                        if(res.status === 200) {
-                            localStorage.setItem('token', res.data.token);
-                            window.location = '/';
-                        }
-                }).catch(()=>{
-                      setVis('visible');
-                      setTimeout(()=> setVis('hidden'), 3000);
-                })
-              }}
-            >
-              SignIn
-            </Button>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="username"
+              label="Username"
+              variant="outlined"
+              fullWidth={true}
+              onChange={(e) => setUser(e.target.value)}
+            />
+            <br />
+            <br />
+            <TextField
+              id="password"
+              label="Password"
+              variant="outlined"
+              type="password"
+              fullWidth={true}
+              onChange={(e) => setPass(e.target.value)}
+            />
+            <br />
+            <br />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button variant="contained" type="submit">
+                SignIn
+              </Button>
+            </div>
+          </form>
         </Card>
       </div>
     </div>

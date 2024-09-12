@@ -84,7 +84,7 @@ function AddCourse() {
               body: JSON.stringify({
                 title: title,
                 description: desc,
-                image: img,
+                imageLink: img,
                 price: price
               }),
               headers: {
