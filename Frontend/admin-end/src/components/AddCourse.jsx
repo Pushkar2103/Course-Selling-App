@@ -79,6 +79,7 @@ function AddCourse() {
           variant="contained"
           onClick={() => {
             if (!(title && desc)) return;
+            console.log(img)
             fetch("http://localhost:3000/admin/create-course", {
               method: "POST",
               body: JSON.stringify({

@@ -22,7 +22,7 @@ function Course() {
             setTitle(res.data.title);
             setPrice(res.data.price);
             setDesc(res.data.description);
-            setImg(res.data.image);
+            setImg(res.data.imageLink);
             setCreatedBy(res.data.createdBy);
         })
     },[]);
@@ -68,7 +68,7 @@ function Course() {
             width: "100%",
             height: "auto",
           }}
-          src={course.image}
+          src={img}
         />
 
         <Typography style={{ textAlign: "center" }}>

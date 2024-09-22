@@ -60,7 +60,7 @@ function Course() {
             width: "100%",
             height: "auto",
           }}
-          src={course.image}
+          src={course.imageLink}
         />
 
         <Typography style={{ textAlign: "center" }}>

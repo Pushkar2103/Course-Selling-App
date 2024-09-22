@@ -72,7 +72,7 @@ function Course(props) {
             width: "100%",
             height: "auto",
           }}
-          src={props.crs.image}
+          src={props.crs.imageLink}
         />
         
         <Typography style={{ marginLeft:30 }}>
