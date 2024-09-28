@@ -27,7 +27,7 @@ const LandingPage = () => {
       height:'80vh',
       width:'100%'
     }}>
-      <Typography variant={'h2'}>
+      <Typography variant={'h2'} textAlign={'center'}>
         Welcome to Coursera
       </Typography>
       <Typography variant={'h5'} style={{color:'gray'}}>
@@ -46,7 +46,7 @@ const LandingPage = () => {
       height:'80vh',
       width:'100%'
     }}>
-      <Typography variant={'h2'}>
+      <Typography variant={'h2'} textAlign={'center'}>
         Create courses to share knowledge
       </Typography>
       <div style={{

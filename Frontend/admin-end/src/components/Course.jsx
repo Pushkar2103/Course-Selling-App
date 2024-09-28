@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Card, collapseClasses, preReleaseLabel, TextField, Typography } from "@mui/material";
+import { Button, Card, collapseClasses, Grid2, preReleaseLabel, TextField, Typography } from "@mui/material";
 import axios from "axios";
+import Grid from '@mui/material/Grid';
 
 function Course() {
     const {courseId} = useParams();
@@ -35,16 +36,14 @@ function Course() {
         </Typography>
     }
 
-    else return <div style={{
-        display:"flex",
-        padding:50,
-        justifyContent:"space-around"
-    }}>
+    else return <Grid container spacing={4} padding={'30px'}>
+    <Grid item lg={5} md={6} sm={12} xs={12} justifyItems={"center"} alignContent={'center'}>
     <Card
         style={{
           width: 300,
           height: 250,
-          padding: 10
+          padding: 10,
+          margin: 'auto'
         }}
       >
         <Typography
@@ -75,14 +74,17 @@ function Course() {
           Rs.{price}
         </Typography>
       </Card>
+    </Grid>
 
+      <Grid item lg={5} md={6} sm={12} xs={12} justifyItems={"center"} alignContent={'center'}>
       <Card style={{
         width:350,
         padding:10,
         display:"flex",
         flexDirection:"column",
         alignItems:'center',
-        flexWrap:"wrap"
+        flexWrap:"wrap",
+        margin:'auto'
       }}>
             <Typography variant={'h6'}>
                 Update course details
@@ -129,7 +131,8 @@ function Course() {
             })
           }}>Submit</Button>
       </Card>
-    </div>
+      </Grid>
+    </Grid>
 }
 
 export default Course;

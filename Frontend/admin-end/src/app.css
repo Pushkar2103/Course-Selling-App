@@ -1,0 +1,8 @@
+#bg {
+    background: rgb(202, 202, 202);
+    height: 70vh;
+    width: 100%;
+    position: fixed;
+    z-index: -10;
+    bottom: 0;
+}

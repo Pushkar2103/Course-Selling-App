@@ -6,12 +6,14 @@ import SignIn from './components/SignIn';
 import Courses from './components/Courses';
 import Course from './components/Course';
 import AddCourse from './components/AddCourse';
+import './app.css'
 
 function App() {
   return (
     <Router>
       <div>
         <Navbar/>
+        <div id='bg'></div>
         <Routes>
           <Route path='/' element={<LandingPage/>} />
           <Route path='/admin/' element={<LandingPage/>} />
