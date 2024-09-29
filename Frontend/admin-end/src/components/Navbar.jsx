@@ -1,7 +1,11 @@
 import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import adminState from '/src/store/atoms/admin.js';
+import BASE_URL from "../utility.js";
+import adminUsername from "../store/selectors/admin.js"
 
 function Navbar() {
     const navigator = useNavigate();
@@ -23,15 +27,16 @@ function Navbar() {
 
 function NavRight() {
     const navigator = useNavigate();
-    const [user, setUser] = useState(null);
+    const setUser = useSetRecoilState(adminState);
+    const user = useRecoilValue(adminUsername);
 
     useEffect(()=> {
-        axios.get('http://localhost:3000/admin/me', {
+        axios.get(`${BASE_URL}/admin/me`, {
             headers: {
                 Authorization: 'bearer '+localStorage.getItem('admin-token')
             }
         }).then((res)=> {
-            setUser(res.data.username)
+            setUser({email: res.data.username})
         })
     }, []);
 
@@ -63,7 +68,7 @@ function NavRight() {
 
         <Button variant="contained" onClick={()=> {
             localStorage.removeItem('admin-token');
-            window.location = '/';
+            setUser({email:""})
         }}>Logout</Button>
     </div>);      
 };

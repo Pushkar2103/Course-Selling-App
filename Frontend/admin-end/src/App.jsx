@@ -7,10 +7,12 @@ import Courses from './components/Courses';
 import Course from './components/Course';
 import AddCourse from './components/AddCourse';
 import './app.css'
+import {RecoilRoot, useSetRecoilState} from 'recoil';
 
 function App() {
   return (
-    <Router>
+    <RecoilRoot>
+      <Router>
       <div>
         <Navbar/>
         <div id='bg'></div>
@@ -25,6 +27,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </RecoilRoot>
   );
 }
 

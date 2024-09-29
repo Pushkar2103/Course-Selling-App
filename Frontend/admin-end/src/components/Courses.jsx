@@ -1,13 +1,14 @@
-import { Card, containerClasses, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import BASE_URL from "../utility";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
   
   useEffect(() => {
-      axios.get("http://localhost:3000/admin/courses", {
+      axios.get(`${BASE_URL}/admin/courses`, {
           headers: {
               authorization: "Bearer " + localStorage.getItem("admin-token"),
             },
@@ -69,7 +70,7 @@ function Course(props) {
           style={{
             objectFit: "contain",
             width: "100%",
-            height: "auto",
+            height: "70%",
           }}
           src={props.crs.imageLink}
         />

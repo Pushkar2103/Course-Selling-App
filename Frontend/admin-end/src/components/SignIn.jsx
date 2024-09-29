@@ -4,16 +4,22 @@ import Card from "@mui/material/Card";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import adminState from "../store/atoms/admin";
+import { useNavigate } from "react-router-dom";
+import BASE_URL from "../utility";
 
 function SignIn() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [vis, setVis] = useState("hidden");
+  const setUsername = useSetRecoilState(adminState);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    axios.post("http://localhost:3000/admin/login", {
+    axios.post(`${BASE_URL}/admin/login`, {
       'username': user,
       'password': pass
     }, {
@@ -23,7 +29,8 @@ function SignIn() {
     }).then((res) => {
       if (res.status === 200) {
         localStorage.setItem('admin-token', res.data.token);
-        window.location = '/admin';
+        setUsername({email:user});
+        navigate('/');
       }
     }).catch(() => {
       setVis('visible');

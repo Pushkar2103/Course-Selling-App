@@ -2,6 +2,7 @@ import { Button, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import BASE_URL from "../utility";
 
 function AddCourse() {
   const [title, setTitle] = useState("");
@@ -80,7 +81,7 @@ function AddCourse() {
           onClick={() => {
             if (!(title && desc)) return;
             console.log(img)
-            fetch("http://localhost:3000/admin/create-course", {
+            fetch(`${BASE_URL}/admin/create-course`, {
               method: "POST",
               body: JSON.stringify({
                 title: title,

@@ -51,7 +51,12 @@ router.post('/login', async (req, res)=> {
 });
 
 router.get('/me', authorization, (req, res)=> {
-    res.status(200).json({username: req.admin.username});
+    try {
+        res.status(200).json({username: req.admin.username});
+    }
+    catch(e) {
+        res.status(403);
+    }
 });
 
 router.get('/courses', authorization, async (req, res)=> {
@@ -95,10 +100,10 @@ router.get('/courses/:courseId', authorization, async (req, res) => {
 
 router.put('/update-course/:courseId', authorization, async (req, res)=> {
     const courseId = req.params.courseId;
-    const {title, description, imageLink, price} = req.body;
+    const {title, createdBy, description, imageLink, price} = req.body;
 
     try {
-        const result = await Course.findByIdAndUpdate(courseId, {title, description, imageLink, price}, {
+        const result = await Course.findByIdAndUpdate(courseId, {title, description, createdBy, imageLink, price}, {
           new: true, 
           runValidators: true, 
         });
@@ -114,5 +119,23 @@ router.put('/update-course/:courseId', authorization, async (req, res)=> {
 
     res.status(200).json({message:'Course updated successfully'});
 });
+
+
+router.delete('/delete-course/:courseId', authorization, async(req, res) => {
+    const courseId = req.params.courseId;
+
+    try {
+        const deletedCourse = await Course.findByIdAndDelete(courseId);
+
+        if (!deletedCourse) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        res.status(200).json({ message: 'Course deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 
 export default router;

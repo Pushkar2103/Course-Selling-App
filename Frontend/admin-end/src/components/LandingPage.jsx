@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Typography, Button, Grid } from '@mui/material';
+import React, { useEffect} from 'react';
+import { Typography, Button } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from "../utility.js"
+import adminUsername from '../store/selectors/admin.js';
+import { useRecoilValue } from 'recoil';
 
 const LandingPage = () => {
-  const [user, setUser] = useState(null);
   const navigator = useNavigate();
+  const user = useRecoilValue(adminUsername);
 
   useEffect(()=>{
-    axios.get('http://localhost:3000/admin/me', {
+    axios.get(`${BASE_URL}/admin/me`, {
       headers: {
           Authorization: 'bearer '+localStorage.getItem('admin-token')
       }

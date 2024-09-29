@@ -2,17 +2,23 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import { Typography } from "@mui/material";
+import BASE_URL from "../utility";
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import adminState from "../store/atoms/admin";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [vis, setVis] = useState("hidden");
+  const setUsername = useSetRecoilState(adminState);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    fetch('http://localhost:3000/admin/signup', {
+    fetch(`${BASE_URL}/admin/signup`, {
       method: 'POST',
       body: JSON.stringify({
         'username': user,
@@ -23,8 +29,11 @@ function SignUp() {
       }
     }).then((res) => {
       if (res.ok) {
-        res.json().then((data) => localStorage.setItem('admin-token', data.token));
-        window.location = '/admin';
+        res.json().then((data) => {
+          localStorage.setItem('admin-token', data.token);
+          setUsername({email:user});
+          navigate('/')
+        });
       } else {
         setVis('visible');
         setTimeout(() => setVis('hidden'), 3000);
